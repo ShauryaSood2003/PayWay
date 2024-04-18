@@ -32,7 +32,7 @@ async function getOnRampTransactions() {
         amount: t.amount,
         status: t.status,
         provider: t.provider
-    }))
+    })).reverse();
 }
 
 export default async function() {
