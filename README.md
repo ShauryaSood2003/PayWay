@@ -1,81 +1,50 @@
-# Turborepo starter
+# Basic SetUp
 
-This is an official starter Turborepo.
+  ## Setting Up the Project
+  
+  Clone the Project
+  ```
+git clone https://github.com/ShauryaSood2003/PayWay.git
+```
+  Install dependency
 
-## Using this example
+``` 
+npm install
+```
+
+## Setting Up DB
 
 Run the following command:
 
+- if you have docker locally installed
+
 ```sh
-npx create-turbo@latest
-```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+docker  run  -e  POSTGRES_PASSWORD="mylittlepassword"  -d  -p  5432:5432  postgres
 
 ```
-cd my-turborepo
-pnpm build
-```
+- if you don't have docker locally then you can use these database providers
 
-### Develop
+	[Avion](https://www.avion.io/)
+	[Neon](https://neon.tech/)
+	
+Migrate your Database and generate the client
+```sh
 
-To develop all apps and packages, run the following command:
+cd .\packages\db\
 
-```
-cd my-turborepo
-pnpm dev
-```
+npx prisma migrate dev --name Added_your_migration_name
 
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+npx prisma generate 
 
 ```
-cd my-turborepo
-npx turbo login
+
+##  To Run the Project
+
+Run the following cmd
+``` 
+npm run dev
 ```
+- Your **User_Application** will run on port **3000**
+- Your **Merchant_Application** will run on port **3001**
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
