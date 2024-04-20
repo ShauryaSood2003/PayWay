@@ -1,5 +1,6 @@
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github";
+import prisma from "@repo/db/client";
 
 export const authOptions = {
     providers:[
@@ -20,10 +21,25 @@ export const authOptions = {
             }
             return token;
             },
-      session: ({ session, token, user }: any) => {
+      session: async({ session, token, user }: any) => {
           if (session.user) {
               session.user.id = token.uid
           }
+          let existsUser=await prisma.merchant.findFirst({
+            where:{
+                email:session.user.email
+            }
+          })
+          if(!existsUser){
+                existsUser=await prisma.merchant.create({
+                    data:{
+                        name:session.user.name,
+                        email:session.user.email,
+                        auth_type:"Google"
+                    }
+                }) 
+        }
+        session.user.id=existsUser?.id
           return session
       }
     },
