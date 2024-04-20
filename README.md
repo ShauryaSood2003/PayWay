@@ -45,6 +45,6 @@ Run the following cmd
 ``` 
 npm run dev
 ```
-- Your **User_Application** will run on port **3000**
-- Your **Merchant_Application** will run on port **3001**
+- Your **User_Application** will run on port **3001**
+- Your **Merchant_Application** will run on port **3000**
 
