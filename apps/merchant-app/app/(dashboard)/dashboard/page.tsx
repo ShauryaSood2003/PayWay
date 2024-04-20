@@ -7,11 +7,11 @@ async function getUser() {
 
 export default async function Home() {
   const session = await getUser();
-  console.log("Sesseion: "+session);
+  console.log("Sesseion: new "+JSON.stringify(session));
   
   return (
     <div>
-      {JSON.stringify(session?.user?.name)}
+      {JSON.stringify(session?.user?.id)}
     </div>
   );
 }

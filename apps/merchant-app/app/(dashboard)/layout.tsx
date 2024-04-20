@@ -1,4 +1,4 @@
-import ApplicationBar from "../../components/ApplicationBar"
+import {ApplicationBar} from "../../components/ApplicationBar"
 import { SidebarItem } from "../../components/SidebarItem"
 export default function Layout({children}:{children:React.ReactNode}){
     return(

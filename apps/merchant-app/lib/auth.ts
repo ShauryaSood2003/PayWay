@@ -6,7 +6,6 @@ export const authOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID  || "",
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-            allowDangerousEmailAccountLinking: true,
         }),
         GitHubProvider({
             clientId: process.env.GITHUB_ID || "",
@@ -14,11 +13,19 @@ export const authOptions = {
         })
     ],
     secret: process.env.JWT_SECRET || "secret",
-    callback: {
-        async session({ session,token }: any) {
-            session.user.id = token.sub;
-            return session;
-        }
+    callbacks: {
+        jwt: async ({ user, token }: any) => {
+            if (user) {
+                token.uid = user.id;
+            }
+            return token;
+            },
+      session: ({ session, token, user }: any) => {
+          if (session.user) {
+              session.user.id = token.uid
+          }
+          return session
+      }
     },
     pages: {
         signIn: "/signin"
