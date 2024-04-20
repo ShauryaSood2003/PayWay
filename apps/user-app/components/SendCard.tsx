@@ -4,8 +4,9 @@ import { Card } from "@repo/ui/card";
 import { TextInput } from "@repo/ui/textinput";
 import { useState } from "react";
 import { p2pTransfer } from "../lib/actions/p2pTransfer";
+import { merchantTransaction } from "../lib/actions/merchantTransfer";
 
-export function SendCard() {
+export function SendCard({identity}:{identity:string}) {
     const [number, setNumber] = useState("");
     const [amount, setAmount] = useState("");
 
@@ -13,7 +14,7 @@ export function SendCard() {
        
             <Card title="Send">
                 <div className="min-w-72 pt-2">
-                    <TextInput placeholder={"Number"} label="Number" onChange={(value) => {
+                    <TextInput placeholder={identity} label={identity} onChange={(value) => {
                         setNumber(value)
                     }} />
                     <TextInput placeholder={"Amount"} label="Amount" onChange={(value) => {
@@ -21,7 +22,11 @@ export function SendCard() {
                     }} />
                     <div className="pt-4 flex justify-center">
                         <Button onClick={async() => {
-                            await p2pTransfer(number, Number(amount) * 100)
+                            if(identity==="Number"){
+                                await p2pTransfer(number, Number(amount) * 100)
+                            }else{
+                                await merchantTransaction(number,Number(amount)*100);
+                            }
                         }}>Send</Button>
                     </div>
                 </div>

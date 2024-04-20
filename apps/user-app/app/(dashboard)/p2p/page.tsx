@@ -34,7 +34,7 @@ export default async function(){
             <div className="flex justify-center items-center w-full">
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-8 p-4">
                     <div className="lg:col-span-3">
-                        <SendCard></SendCard>
+                        <SendCard identity="Number"></SendCard>
                     </div>
                     <div className="lg:col-span-5">
                         <P2PTransaction transactions={trsx}></P2PTransaction>

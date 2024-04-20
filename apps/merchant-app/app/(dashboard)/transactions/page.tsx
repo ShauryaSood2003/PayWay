@@ -1,23 +1,29 @@
-// import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
+import { Transactions } from "../../../components/Transactions";
+import { authOptions } from "../../../lib/auth";
+import prisma from "@repo/db/client";
 
-// import { authOptions } from "../../../lib/auth";
-// import prisma from "@repo/db/client";
+async function getTransactions() {
+    const session=await getServerSession(authOptions);
+    const transaction=await prisma.merchantTranactions.findMany({
+        where:{
+            toUserId:Number(session?.user?.id)
+        }
+    });
+    return transaction.map((t) => ({
+        time: t.timestamp,
+        amount: t.amount,
+        status: "Done",
+        provider: t.fromId.toString()
+    }));
+    
+}
 
-// async function getTranaction(){
-//     const session=await getServerSession(authOptions);
-//     if(!session?.user){
-//         throw new Error("User is not authenticated");
-//     }
-//     const merchant=await prisma.merchant.findFirst({
-//         where:{
-//             id:Number(session?.user?.name)
-//         }
-//     })
-// }
-export default function (){
-
+export default async function (){
+    const tsx=await getTransactions();
     return(
-        
-        <h1>Trans</h1>
+        <div className="w-full m-5 md:m-10">
+            <Transactions transactions={tsx}></Transactions>
+        </div>
     )
 }

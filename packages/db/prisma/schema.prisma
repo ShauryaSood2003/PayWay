@@ -34,11 +34,14 @@ model Merchant {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String?
+  balance BalanceMerchant[]
   receivedTransfers MerchantTranactions[]
   auth_type AuthType 
 }
 model MerchantTranactions {
   id Int @id @default(autoincrement())
+  amount Int
+  timestamp DateTime
   fromId Int
   fromUser User @relation(fields: [fromId],references: [id])
   toUserId Int
@@ -62,6 +65,13 @@ model Balance {
   amount Int
   locked Int
   user   User @relation(fields: [userId], references: [id])
+}
+model BalanceMerchant {
+  id     Int  @id @default(autoincrement())
+  merchanId Int @unique
+  amount Int
+  locked Int
+  merchant Merchant @relation(fields: [merchanId],references: [id])
 }
 
 enum AuthType {

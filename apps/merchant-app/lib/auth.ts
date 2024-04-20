@@ -38,6 +38,13 @@ export const authOptions = {
                         auth_type:"Google"
                     }
                 }) 
+                await prisma.balanceMerchant.create({
+                    data:{
+                        merchanId:Number(existsUser.id),
+                        amount:0,
+                        locked:0
+                    }
+                })
         }
         session.user.id=existsUser?.id
           return session
