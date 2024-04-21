@@ -20,7 +20,7 @@ jobs:
         uses : npm install
 
       - name : Generate prisma client
-        uses : np  run db:generate
+        uses : npm run db:generate
 
       - name : Run Build
         uses : npm run build
