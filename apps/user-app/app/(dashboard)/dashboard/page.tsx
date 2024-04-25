@@ -1,5 +1,10 @@
-export default function Home(){
+
+
+export default async function Home(){
+    
     return(
-        <h1>DashBoard!</h1>
+        <div>
+           Hello
+        </div>
     )
 }

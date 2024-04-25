@@ -3,6 +3,7 @@ import { P2PTransaction } from "../../../components/P2PTransaction";
 import { SendCard } from "../../../components/SendCard";
 import { authOptions } from "../../../lib/auth";
 import prisma from "@repo/db/client";
+import P2PChart from "../../../components/P2PChart";
 
 async function getP2PTransactions() {
     const session=await getServerSession(authOptions);
@@ -21,7 +22,7 @@ async function getP2PTransactions() {
         fromUserId: t.fromUserId,
         toUserId: t.toUserId,
         currentUser:Number(session?.user?.id)
-    })).reverse();
+    }));
     
 }
 export default async function(){
@@ -31,6 +32,7 @@ export default async function(){
             <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
                 P2P Transfer
             </div>
+            <P2PChart transactions={trsx.reverse()}></P2PChart>
             <div className="flex justify-center items-center w-full">
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-8 p-4">
                     <div className="lg:col-span-3">
