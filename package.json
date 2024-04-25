@@ -23,6 +23,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "recharts": "^2.12.6",
     "tailwindcss": "^3.4.3"
   }
 }
