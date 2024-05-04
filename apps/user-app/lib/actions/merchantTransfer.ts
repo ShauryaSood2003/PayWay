@@ -8,7 +8,9 @@ export async function merchantTransaction(to:string,amount:number){
     const from = session?.user?.id;
     if (!from) {
         return {
-            message: "Error while sending"
+            message: "Error while sending",
+            status:400,
+            to:-1
         }
     }
     const toUser = await prisma.merchant.findFirst({
@@ -19,7 +21,9 @@ export async function merchantTransaction(to:string,amount:number){
 
     if (!toUser) {
         return {
-            message: "User not found"
+            message: "User not found",
+            status:400,
+            to:-1
         }
     }
     await prisma.$transaction(async (tx) => {
@@ -53,4 +57,9 @@ export async function merchantTransaction(to:string,amount:number){
             }
           })
     });
+    return {
+      message: "Successfull",
+      status:200,
+      to:toUser.id
+    }
 }

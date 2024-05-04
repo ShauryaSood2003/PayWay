@@ -5,10 +5,13 @@ import { TextInput } from "@repo/ui/textinput";
 import { useState } from "react";
 import { p2pTransfer } from "../lib/actions/p2pTransfer";
 import { merchantTransaction } from "../lib/actions/merchantTransfer";
+import axios from "axios";
 
-export function SendCard({identity}:{identity:string}) {
+
+export function SendCard({identity,userId}:{identity:string,userId:string}) {
     const [number, setNumber] = useState("");
     const [amount, setAmount] = useState("");
+
 
     return <div className="lg:h-[90vh]">
        
@@ -23,9 +26,29 @@ export function SendCard({identity}:{identity:string}) {
                     <div className="pt-4 flex justify-center">
                         <Button onClick={async() => {
                             if(identity==="Number"){
-                                await p2pTransfer(number, Number(amount) * 100)
+                                const transResponse=await p2pTransfer(number, Number(amount) * 100);
+                                // if(transResponse.status==200){
+                                //     await axios({
+                                //         url:"http://localhost:8080",
+                                //         method:"POST",
+                                //         data:{
+                                //             to:transResponse.to,
+                                //             notify:`Amount Rs. ${amount}`
+                                //         }
+                                //     })
+                                // }
                             }else{
-                                await merchantTransaction(number,Number(amount)*100);
+                                const transResponse=await merchantTransaction(number,Number(amount)*100);
+                                if(transResponse.status==200){
+                                    await axios({
+                                        url:"http://localhost:8080",
+                                        method:"POST",
+                                        data:{
+                                            to:number,
+                                            notify:`Amount Rs. ${amount}`
+                                        }
+                                    })
+                                }
                             }
                         }}>Send</Button>
                     </div>

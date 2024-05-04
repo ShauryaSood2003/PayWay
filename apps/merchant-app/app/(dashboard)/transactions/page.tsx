@@ -1,29 +1,54 @@
-import { getServerSession } from "next-auth";
+"use client"
+import { getTransactions } from "../../../lib/actions/getTransactions";
 import { Transactions } from "../../../components/Transactions";
-import { authOptions } from "../../../lib/auth";
-import prisma from "@repo/db/client";
+import { useEffect, useState } from "react";
+import useWebhook from "../../../lib/hooks/Webhooks";
+import { useSession } from "next-auth/react";
 
-async function getTransactions() {
-    const session=await getServerSession(authOptions);
-    const transaction=await prisma.merchantTranactions.findMany({
-        where:{
-            toUserId:Number(session?.user?.id)
-        }
-    });
-    return transaction.map((t) => ({
-        time: t.timestamp,
-        amount: t.amount,
-        status: "Done",
-        provider: t.fromId.toString()
-    }));
+
+export default function (){
+    const [trsx,setTrsx]=useState(null);
+
+    const session:any=useSession();
+    const userId=session.data?.user?.id;
     
-}
+    const ws=useWebhook(`ws://localhost:8080?userId=${userId}`);
 
-export default async function (){
-    const tsx=await getTransactions();
+    // for first trsx get call 
+    useEffect(()=>{
+        async function callMe() {
+            const tsx:any=(await getTransactions()).reverse();
+            setTrsx(tsx);
+        }
+        callMe()
+    },[]);
+
+    // This add a event listner to the ws to listen to every incoming messages!
+    useEffect(()=>{
+        if(ws){
+            const handleIncomingMessage = async(event:any) => {
+                const receivedMessage = event.data;
+                console.log("Received:", receivedMessage);
+                const tsx:any=(await getTransactions()).reverse();
+                setTrsx(tsx);
+            };
+
+            ws.addEventListener("message", handleIncomingMessage);
+  
+            return () => {
+            // Cleanup: remove event listener when component unmounts
+            ws.removeEventListener("message", handleIncomingMessage);
+            };
+        }
+        
+    },[ws]);
+
+    if(!trsx){
+        return <div>Loaddder....</div>
+    }
     return(
         <div className="w-full m-5 md:m-10">
-            <Transactions transactions={tsx}></Transactions>
+            <Transactions transactions={trsx}></Transactions>
         </div>
     )
 }
