@@ -1,4 +1,7 @@
-# Basic SetUp
+# PayWay Application
+
+![Example Image](https://pbs.twimg.com/media/GMA0ypSXMAIenX9?format=jpg&name=large)
+
 
   ## Setting Up the Project
   
@@ -47,4 +50,7 @@ npm run dev
 ```
 - Your **User_Application** will run on port **3001**
 - Your **Merchant_Application** will run on port **3000**
+  
+## Post
 
+[Demo Link ↗️](https://x.com/i/status/1786803657373037034)
